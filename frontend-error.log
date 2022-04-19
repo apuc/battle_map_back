@@ -1,0 +1,2 @@
+2022/04/19 11:07:36 [error] 12326#12326: *1 directory index of "/var/www/battlemap/frontend/web/" is forbidden, client: 127.0.0.1, server: battlemap, request: "GET / HTTP/1.1", host: "battlemap"
+2022/04/19 11:08:06 [error] 12326#12326: *1 directory index of "/var/www/battlemap/frontend/web/" is forbidden, client: 127.0.0.1, server: battlemap, request: "GET / HTTP/1.1", host: "battlemap"
