@@ -14,6 +14,10 @@ class m220419_091122_create_map_table extends Migration
     {
         $this->createTable('{{%map}}', [
             'id' => $this->primaryKey(),
+            'json_data' => $this->text(),
+            'created_at' => $this->dateTime(),
+            'updated_at' => $this->dateTime()->null(),
+            'status' => $this->smallInteger()->notNull()->defaultValue(1),
         ]);
     }
 
