@@ -21,8 +21,9 @@ class Map extends \common\models\Map implements Linkable
     {
         return [
             'id',
-            'json_data',
-            'created_at',
+            'created_at' => function () {
+                return Yii::$app->formatter->asDate($this->created_at, 'yyyy-MM-dd');
+            },
             'status'
         ];
     }
@@ -30,14 +31,14 @@ class Map extends \common\models\Map implements Linkable
     public function extraFields()
     {
         return [
-
+            'json_data',
         ];
     }
 
     public function getLinks(): array
     {
         return [
-            'self' => Url::to(['map/map', 'map_id' => $this->id], true),
+            'self' => Url::to(['map/map', 'date' => Yii::$app->formatter->asDate($this->created_at, 'yyyy-MM-dd')], true),
         ];
     }
 }

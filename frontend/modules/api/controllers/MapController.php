@@ -6,11 +6,10 @@ namespace frontend\modules\api\controllers;
 
 use common\behaviors\GsCors;
 use common\services\ResponseService;
+use DateTime;
 use frontend\modules\api\models\Map;
 use Yii;
-use yii\base\BaseObject;
 use yii\data\ActiveDataProvider;
-use yii\db\Expression;
 use yii\filters\ContentNegotiator;
 use yii\rest\Controller;
 use yii\web\Response;
@@ -59,11 +58,18 @@ class MapController extends Controller
         ];
     }
 
-    public function actionMap($map_id): array
+    public function actionMap($date): array
     {
+        $formatDate = date("Y-m-d", strtotime($date));
+
         $response = ResponseService::successResponse(
             'One map.',
-            Map::find()->where(['id' => $map_id])->all()
+            Map::find()
+                ->orderBy('created_at DESC')
+                ->filterWhere(['like', 'created_at', $formatDate])
+                ->orFilterWhere(['<=', 'created_at', $formatDate])
+                ->limit(1)
+                ->one()
         );
 
         if (empty($response['data'])) {
@@ -85,11 +91,19 @@ class MapController extends Controller
     {
         $mapModel = new Map();
         $mapModel->json_data = Yii::$app->request->post('json_data');
+        $date = date("Y-m-d H-m-s", strtotime(Yii::$app->request->post('date')));
+
+        $mapModel->created_at = $date;
+
+        if (Map::find()->where(['like', 'created_at', $date])) {
+            return array(
+                'message' => 'Map already exist!',
+            );
+        }
 
         if ($mapModel->save()) {
-            $response = ResponseService::successResponse(
-                'Map is created!',
-                Map::find()->where(['id' => $mapModel->id])->all()
+            return array(
+                'message' => 'Map is created!',
             );
         } else {
             Yii::$app->response->statusCode = 400;
