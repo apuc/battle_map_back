@@ -30,7 +30,7 @@ class Map extends \yii\db\ActiveRecord
         return [
             [
                 'class' => TimestampBehavior::class,
-                'createdAtAttribute' => 'created_at',
+//                'createdAtAttribute' => 'created_at',
                 'updatedAtAttribute' => 'updated_at',
                 'value' => new Expression('NOW()'),
             ],

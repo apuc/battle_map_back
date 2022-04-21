@@ -91,19 +91,11 @@ class MapController extends Controller
     {
         $mapModel = new Map();
         $mapModel->json_data = Yii::$app->request->post('json_data');
-        $date = date("Y-m-d H-m-s", strtotime(Yii::$app->request->post('date')));
-
-        $mapModel->created_at = $date;
-
-        if (Map::find()->where(['like', 'created_at', $date])) {
-            return array(
-                'message' => 'Map already exist!',
-            );
-        }
 
         if ($mapModel->save()) {
-            return array(
-                'message' => 'Map is created!',
+            $response = ResponseService::successResponse(
+                'Map is created!',
+                Map::find()->where(['id' => $mapModel->id])->all()
             );
         } else {
             Yii::$app->response->statusCode = 400;

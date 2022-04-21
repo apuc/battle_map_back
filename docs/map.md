@@ -60,13 +60,24 @@
     </tr>
     <tr>
         <td>
-            map_id
+            date
         </td>
         <td>
-            id карты
+            Дата
         </td>
         <td>
             Да
+        </td>
+    </tr>
+    <tr>
+        <td>
+            expand=json_data
+        </td>
+        <td>
+            Вернёт json данные карты
+        </td>
+        <td>
+            Нет
         </td>
     </tr>
 </table>
@@ -163,7 +174,7 @@
 }
 ```
 
-### Создание коментария
+### Создание новой карты
 
 `http://battlemap.loc/api/map/set-map/`
 <p>
@@ -189,6 +200,22 @@
             Данные в json формате
         </td>
     </tr>
+    <tr>
+        <td>
+            date
+        </td>
+        <td>
+            Дата
+        </td>
+    </tr>
+    <tr>
+        <td>
+            expand=json_data
+        </td>
+        <td>
+            Вернёт json данные карты
+        </td>
+    </tr>
 </table>
 <p>
     Пример запроса:
@@ -202,11 +229,18 @@
 
 ```json5
 {
-  "message": "Comment is created!",
-  "data": {
-    "id": 26,
-    "comment_body": "jbjdhfbvjhfbvfcfvffvf",
-    "username": "popo"
-  }
+  "message": "Map is created!",
+  "data": [
+    {
+      "id": 25,
+      "created_at": "2022-04-21",
+      "status": 1,
+      "_links": {
+        "self": {
+          "href": "http://battlemap.loc/api/map/map?date=2022-04-21"
+        }
+      }
+    }
+  ]
 }
 ```
