@@ -11,9 +11,10 @@ use yii\db\Expression;
  *
  * @property int $id
  * @property string|null $json_data
- * @property int $created_at
- * @property int $updated_at
+ * @property string|null $created_at
+ * @property string|null $updated_at
  * @property int $status
+ * @property string|null $date
  */
 class Map extends \yii\db\ActiveRecord
 {
@@ -30,7 +31,7 @@ class Map extends \yii\db\ActiveRecord
         return [
             [
                 'class' => TimestampBehavior::class,
-//                'createdAtAttribute' => 'created_at',
+                'createdAtAttribute' => 'created_at',
                 'updatedAtAttribute' => 'updated_at',
                 'value' => new Expression('NOW()'),
             ],
@@ -44,7 +45,8 @@ class Map extends \yii\db\ActiveRecord
     {
         return [
             [['json_data'], 'string'],
-            [['created_at', 'updated_at'], 'safe'],
+            [['created_at', 'updated_at', 'date'], 'safe'],
+            [['json_data', 'date'], 'required'],
             [['status'], 'integer'],
         ];
     }
@@ -60,6 +62,7 @@ class Map extends \yii\db\ActiveRecord
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'status' => 'Status',
+            'date' => 'Date',
         ];
     }
 }

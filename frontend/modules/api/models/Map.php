@@ -20,18 +20,17 @@ class Map extends \common\models\Map implements Linkable
     public function fields()
     {
         return [
-            'id',
-            'created_at' => function () {
-                return Yii::$app->formatter->asDate($this->created_at, 'yyyy-MM-dd');
+            'date' => function () {
+                return Yii::$app->formatter->asDate($this->date, 'yyyy-MM-dd');
             },
-            'status'
+            'json_data',
         ];
     }
 
     public function extraFields()
     {
         return [
-            'json_data',
+
         ];
     }
 

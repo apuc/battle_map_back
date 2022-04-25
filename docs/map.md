@@ -1,4 +1,4 @@
-# Коментарии
+# Данные
 
 ## Методы
 
@@ -13,7 +13,7 @@
     </tr>
     <tr>
         <td>
-            api/map/map/
+            api/map/get-data/
         </td>
         <td>
             Получить данные
@@ -21,15 +21,7 @@
     </tr>
      <tr>
         <td>
-            api/map/map-list/
-        </td>
-        <td>
-            Получить список данных
-        </td>
-    </tr>
-     <tr>
-        <td>
-            api/map/set-map/
+            api/map/set-data/
         </td>
         <td>
             Сохранить данные
@@ -39,12 +31,12 @@
 
 ### Получить данные
 
-`http://battlemap.loc/api/map/map/`
+`http://battlemap.loc/api/map/set-data/`
 <p>
-    Для получения данных необходимо отправить <b>GET</b> запрос на URL http://battlemap.loc/api/map/map/
+    Для получения данных необходимо отправить <b>GET</b> запрос на URL http://battlemap.loc/api/map/set-data/
 </p>
 <p>
-    Требуемые параметры:
+    Параметры:
 </p>
 <table>
     <tr>
@@ -71,10 +63,11 @@
     </tr>
     <tr>
         <td>
-            expand=json_data
+            startDate
         </td>
         <td>
-            Вернёт json данные карты
+            Начальная дата. При передаче будет возвращены данные в промежутке между
+            startDate и date
         </td>
         <td>
             Нет
@@ -85,7 +78,7 @@
     Пример запроса:
 </p>
 
-`http://battlemap.loc/api/map/map/?map_id=1`
+`http://battlemap.loc/api/map/get-data/?startDate=2022-04-19&date=2022-04-25`
 
 <p>
     Пример возвращаемых данных
@@ -93,16 +86,24 @@
 
 ```json5
 {
-  "message": "One map.",
+  "message": "Data for the period.",
   "data": [
     {
-      "id": 1,
-      "json_data": "nd cnd cnd",
-      "created_at": "2022-04-19 12:36:11",
-      "status": 1,
+      "date": "2022-04-22",
+      "json_data": "fmkcbnc fnvjfcnvm",
       "_links": {
         "self": {
-          "href": "http://battlemap.loc/api/map/map?map_id=1"
+          "href": "http://battlemap.loc/api/map/map?date=2022-04-22"
+        }
+      }
+    },
+    '...',
+    {
+      "date": "2022-04-21",
+      "json_data": "fmkcbnc fnvjfcnvm",
+      "_links": {
+        "self": {
+          "href": "http://battlemap.loc/api/map/map?date=2022-04-21"
         }
       }
     }
@@ -110,75 +111,11 @@
 }
 ```
 
-### Получение списка данных
+### Сохранить данные
 
-`http://battlemap.loc/api/map/map-list/`
+`http://battlemap.loc/api/map/set-data/`
 <p>
-    Для получения списка данных необходимо отправить <b>GET</b> запрос на URL http://battlemap.loc/api/map/map-list/
-</p>
-
-<p>
-    Пример запроса:
-</p>
-
-`http://battlemap.loc/api/map/map-list/`
-
-<p>
-    Пример возвращаемых данных
-</p>
-
-```json5
-{
-  "news": [
-    {
-      "id": 2,
-      "json_data": "nd cnd cnd",
-      "created_at": "2022-04-19 12:36:11",
-      "status": 1,
-      "_links": {
-        "self": {
-          "href": "http://battlemap.loc/api/map/map?map_id=2"
-        }
-      }
-    },
-    '...',
-    {
-      "id": 17,
-      "json_data": " fnjfbj jnfvjnjfvn jfnvjnffnj",
-      "created_at": "2022-04-19 14:19:50",
-      "status": 1,
-      "_links": {
-        "self": {
-          "href": "http://battlemap.loc/api/map/map?map_id=17"
-        }
-      }
-    }
-  ],
-  "_links": {
-    "self": {
-      "href": "http://battlemap.loc/api/map/map-list?page=1"
-    },
-    "first": {
-      "href": "http://battlemap.loc/api/map/map-list?page=1"
-    },
-    "last": {
-      "href": "http://battlemap.loc/api/map/map-list?page=1"
-    }
-  },
-  "_meta": {
-    "totalCount": 17,
-    "pageCount": 1,
-    "currentPage": 1,
-    "perPage": 20
-  }
-}
-```
-
-### Создание новой карты
-
-`http://battlemap.loc/api/map/set-map/`
-<p>
-    Для создания записи необходимо отправить <b>POST</b> запрос на URL http://battlemap.loc/api/map/set-map/
+    Для сохранения данных <b>POST</b> запрос на URL http://battlemap.loc/api/map/set-data/
 </p>
 <p>
     Параметры:
@@ -205,15 +142,7 @@
             date
         </td>
         <td>
-            Дата
-        </td>
-    </tr>
-    <tr>
-        <td>
-            expand=json_data
-        </td>
-        <td>
-            Вернёт json данные карты
+            Дата, для сохранения данных. Если данные с переданной датой уже существуют, то данные будут презаписаны
         </td>
     </tr>
 </table>
@@ -221,7 +150,7 @@
     Пример запроса:
 </p>
 
-`http://battlemap.loc/api/map/set-map/`
+`http://battlemap.loc/api/map/set-data/`
 
 <p>
     Пример возвращаемых данных
@@ -229,15 +158,14 @@
 
 ```json5
 {
-  "message": "Map is created!",
+  "message": "Data is saved!",
   "data": [
     {
-      "id": 25,
-      "created_at": "2022-04-21",
-      "status": 1,
+      "date": "2022-01-24",
+      "json_data": "8888777",
       "_links": {
         "self": {
-          "href": "http://battlemap.loc/api/map/map?date=2022-04-21"
+          "href": "http://battlemap.loc/api/map/map?date=2022-04-25"
         }
       }
     }

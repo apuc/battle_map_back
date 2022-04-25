@@ -6,10 +6,8 @@ namespace frontend\modules\api\controllers;
 
 use common\behaviors\GsCors;
 use common\services\ResponseService;
-use DateTime;
 use frontend\modules\api\models\Map;
 use Yii;
-use yii\data\ActiveDataProvider;
 use yii\filters\ContentNegotiator;
 use yii\rest\Controller;
 use yii\web\Response;
@@ -58,43 +56,59 @@ class MapController extends Controller
         ];
     }
 
-    public function actionMap($date): array
+    public function actionGetData($date, $startDate = null)//: array
     {
         $formatDate = date("Y-m-d", strtotime($date));
+        $response = null;
 
-        $response = ResponseService::successResponse(
-            'One map.',
-            Map::find()
-                ->orderBy('created_at DESC')
-                ->filterWhere(['like', 'created_at', $formatDate])
-                ->orFilterWhere(['<=', 'created_at', $formatDate])
-                ->limit(1)
-                ->one()
-        );
+        if ($startDate == null) {
+            $response = ResponseService::successResponse(
+                'One data',
+                Map::find()
+                    ->orderBy('created_at DESC')
+                    ->filterWhere(['like', 'date', $formatDate])
+                    ->orFilterWhere(['<=', 'date', $formatDate])
+                    ->limit(1)
+                    ->one()
+            );
+        } else {
+            $formatStartDate = date("Y-m-d", strtotime($startDate));
+
+            $response = ResponseService::successResponse(
+                'Data for the period.',
+                Map::find()
+                    ->orderBy('created_at DESC')
+                    ->where(['<=', 'date', $formatDate])
+                    ->andWhere(['>=', 'date', $formatStartDate])
+                    ->all()
+            );
+        }
 
         if (empty($response['data'])) {
             $response = ResponseService::errorResponse(
-                'The map not exist!'
+                'The data not exist!'
             );
         }
         return $response;
     }
 
-    public function actionMapList(): ActiveDataProvider
+    public function actionSetData(): array
     {
-        return new ActiveDataProvider([
-            'query' => Map::find()->orderBy('created_at'),
-        ]);
-    }
+        $json = Yii::$app->request->post('json_data');
+        $date = Yii::$app->request->post('date');
 
-    public function actionSetMap(): array
-    {
-        $mapModel = new Map();
-        $mapModel->json_data = Yii::$app->request->post('json_data');
+        if (Map::find()->where(['date' => $date])->exists()) {
+            $mapModel = Map::find()->where(['date' => $date])->one();
+        } else {
+            $mapModel = new Map();
+        }
+
+        $mapModel->json_data = $json;
+        $mapModel->date = $date;
 
         if ($mapModel->save()) {
             $response = ResponseService::successResponse(
-                'Map is created!',
+                'Data is saved!',
                 Map::find()->where(['id' => $mapModel->id])->all()
             );
         } else {
