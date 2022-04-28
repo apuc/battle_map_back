@@ -59,13 +59,12 @@ class MapController extends Controller
     public function actionGetData($date, $startDate = null)//: array
     {
         $formatDate = date("Y-m-d", strtotime($date));
-        $response = null;
 
         if ($startDate == null) {
             $response = ResponseService::successResponse(
                 'One data',
                 Map::find()
-                    ->orderBy('created_at DESC')
+                    ->orderBy('date DESC')
                     ->filterWhere(['like', 'date', $formatDate])
                     ->orFilterWhere(['<=', 'date', $formatDate])
                     ->limit(1)
@@ -77,7 +76,7 @@ class MapController extends Controller
             $response = ResponseService::successResponse(
                 'Data for the period.',
                 Map::find()
-                    ->orderBy('created_at DESC')
+                    ->orderBy('date DESC')
                     ->where(['<=', 'date', $formatDate])
                     ->andWhere(['>=', 'date', $formatStartDate])
                     ->all()

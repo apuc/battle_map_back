@@ -37,7 +37,7 @@ class Map extends \common\models\Map implements Linkable
     public function getLinks(): array
     {
         return [
-            'self' => Url::to(['map/map', 'date' => Yii::$app->formatter->asDate($this->created_at, 'yyyy-MM-dd')], true),
+            'self' => Url::to(['map/map', 'date' => Yii::$app->formatter->asDate($this->date, 'yyyy-MM-dd')], true),
         ];
     }
 }
