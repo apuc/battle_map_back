@@ -51,12 +51,27 @@ class MapController extends Controller
     {
         return [
             'map' => ['GET'],
-            'map-list' => ['GET'],
+            'get-changes' => ['GET'],
             'set-map' => ['POST'],
         ];
     }
 
-    public function actionGetData($date, $startDate = null)//: array
+    /**
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function actionGetChanges(): array
+    {
+        $dates = Map::find()->select('date')->asArray()->all();
+        $formattedDates = [];
+
+        foreach ($dates as $date) {
+            $formattedDates[] = Yii::$app->formatter->asDate($date['date'], 'yyyy-MM-dd');
+        }
+
+        return $formattedDates;
+    }
+
+    public function actionGetData($date, $startDate = null): array
     {
         $formatDate = date("Y-m-d", strtotime($date));
 
