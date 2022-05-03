@@ -24,6 +24,7 @@ class Map extends \common\models\Map implements Linkable
                 return Yii::$app->formatter->asDate($this->date, 'yyyy-MM-dd');
             },
             'json_data',
+            'circle_data'
         ];
     }
 

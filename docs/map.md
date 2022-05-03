@@ -98,11 +98,12 @@
   "message": "Data for the period.",
   "data": [
     {
-      "date": "2022-04-22",
-      "json_data": "fmkcbnc fnvjfcnvm",
+      "date": "2022-05-06",
+      "json_data": "hhfbxxxx88",
+      "circle_data": "fdbg8888fgbg999",
       "_links": {
         "self": {
-          "href": "http://battlemap.loc/api/map/map?date=2022-04-22"
+          "href": "http://battlemap.loc/api/map/map?date=2022-05-06"
         }
       }
     },
@@ -110,6 +111,7 @@
     {
       "date": "2022-04-21",
       "json_data": "fmkcbnc fnvjfcnvm",
+      "circle_data": null,
       "_links": {
         "self": {
           "href": "http://battlemap.loc/api/map/map?date=2022-04-21"
@@ -137,6 +139,9 @@
         <th>
             Значение
         </th>
+        <th>
+            Требуется
+        </th>
     </tr>
     <tr>
         <td>
@@ -145,6 +150,9 @@
         <td>
             Данные в json формате
         </td>
+        <td>
+            Да
+        </td>
     </tr>
     <tr>
         <td>
@@ -152,6 +160,20 @@
         </td>
         <td>
             Дата, для сохранения данных. Если данные с переданной датой уже существуют, то данные будут презаписаны
+        </td>
+        <td>
+            Да
+        </td>
+    </tr>
+    <tr>
+        <td>
+           circle_data
+        </td>
+        <td>
+            Данные для построения кругов
+        </td>
+        <td>
+            Нет
         </td>
     </tr>
 </table>
@@ -170,11 +192,12 @@
   "message": "Data is saved!",
   "data": [
     {
-      "date": "2022-01-24",
-      "json_data": "8888777",
+      "date": "2022-05-06",
+      "json_data": "hhfbxxxx88",
+      "circle_data": "fdbg8888fgbg999",
       "_links": {
         "self": {
-          "href": "http://battlemap.loc/api/map/map?date=2022-04-25"
+          "href": "http://battlemap.loc/api/map/map?date=2022-05-06"
         }
       }
     }

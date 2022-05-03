@@ -79,17 +79,21 @@ class MapController extends ApiController
     public function actionSetData(): array
     {
         $json = Yii::$app->request->post('json_data');
+        $circleData = Yii::$app->request->post('circle_data');
         $date = Yii::$app->request->post('date');
 
         if (Map::find()->where(['date' => $date])->exists()) {
             $mapModel = Map::find()->where(['date' => $date])->one();
         } else {
             $mapModel = new Map();
+            $mapModel->date = $date;
+        }
+
+        if (!empty($circleData)) {
+            $mapModel->circle_data = $circleData;
         }
 
         $mapModel->json_data = $json;
-        $mapModel->date = $date;
-
         if ($mapModel->save()) {
             $response = ResponseService::successResponse(
                 'Data is saved!',

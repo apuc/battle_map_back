@@ -11,6 +11,7 @@ use yii\db\Expression;
  *
  * @property int $id
  * @property string|null $json_data
+ * @property string|null $circle_data
  * @property string|null $created_at
  * @property string|null $updated_at
  * @property int $status
@@ -44,7 +45,7 @@ class Map extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['json_data'], 'string'],
+            [['json_data', 'circle_data'], 'string'],
             [['created_at', 'updated_at', 'date'], 'safe'],
             [['json_data', 'date'], 'required'],
             [['status'], 'integer'],
