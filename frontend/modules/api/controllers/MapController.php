@@ -4,48 +4,18 @@
 namespace frontend\modules\api\controllers;
 
 
-use common\behaviors\GsCors;
 use common\services\ResponseService;
 use frontend\modules\api\models\Map;
 use Yii;
-use yii\filters\ContentNegotiator;
-use yii\rest\Controller;
-use yii\web\Response;
 
 
-class MapController extends Controller
+class MapController extends ApiController
 {
-    public $modelClass = 'frontend\modules\api\models\News';
+    public $modelClass = 'frontend\modules\api\models\Map';
     public $serializer = [
         'class' => 'yii\rest\Serializer',
-        'collectionEnvelope' => 'news',
-
+        'collectionEnvelope' => 'map',
     ];
-
-    public function behaviors(): array
-    {
-        return [
-            'corsFilter' => [
-                'class' => GsCors::class,
-                'cors' => [
-                    'Origin' => ['*'],
-                    //'Access-Control-Allow-Credentials' => true,
-                    'Access-Control-Allow-Headers' => [
-                        'Content-Type',
-                        'Access-Control-Allow-Headers',
-                        'Authorization',
-                        'X-Requested-With'
-                    ],
-                ]
-            ],
-            [
-                'class' => ContentNegotiator::className(),
-                'formats' => [
-                    'application/json' => Response::FORMAT_JSON,
-                ],
-            ],
-        ];
-    }
 
     public function verbs(): array
     {
