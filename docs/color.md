@@ -27,6 +27,14 @@
             Сохранить цвет
         </td>
     </tr>
+    <tr>
+        <td>
+            api/color/set-colors/
+        </td>
+        <td>
+            Перезапись массива цветов
+        </td>
+    </tr>
 </table>
 
 ### Получить цвета
@@ -139,5 +147,85 @@
     "value": "#d887000",
     "name": "yyy888"
   }
+}
+```
+
+### Сохранить массив цветов
+
+`http://battlemap.loc/api/color/set-colorы/`
+<p>
+    Для сохранения/перезаписи массива цветов необходимо отправить <b>POST</b>
+    запрос на URL http://battlemap.loc/api/color/set-colors/ c json-м цветов в теле.
+    <br> При передаче пустого параметра id будет сохранён новый цвет. Цвета, которых не будет 
+    в массиве на сохранение будут удалены.
+     
+</p>
+<p>
+    Пример ожидаемого json:
+</p>
+
+```json5
+{
+    "colors" : [
+         {
+            "id": null,
+            "value": "ppppppppp",
+            "name": "999999"
+        },
+        {
+            "id": 2,
+            "value": "#d887000",
+            "name": "yyy888"
+        },
+        {
+            "id": 3,
+            "value": "#00000000",
+            "name": null
+        },
+        {
+            "id": 4,
+            "value": "#d887000",
+            "name": "88888888888888"
+        }
+    ]
+}
+```
+
+<p>
+    Пример запроса:
+</p>
+
+`http://battlemap.loc/api/color/set-colors/`
+
+<p>
+    Пример возвращаемых данных
+</p>
+
+```json5
+{
+  "message": "Colors saved!",
+  "data": [
+    {
+      "id": 1,
+      "value": "dfdvfbfgb",
+      "name": null
+    },
+    '...',
+    {
+      "id": 10,
+      "value": "dfdvfbfgb",
+      "name": null
+    },
+    {
+      "id": 11,
+      "value": "ppppppppp",
+      "name": "999999"
+    },
+    {
+      "id": 12,
+      "value": "ttttttttttttttttt",
+      "name": "999999"
+    }
+  ]
 }
 ```

@@ -7,6 +7,8 @@ namespace frontend\modules\api\controllers;
 use common\services\ResponseService;
 use frontend\modules\api\models\Color;
 use Yii;
+use yii\base\BaseObject;
+use yii\helpers\ArrayHelper;
 
 
 class ColorController extends ApiController
@@ -16,6 +18,7 @@ class ColorController extends ApiController
         return [
             'get-color' => ['GET'],
             'set-color' => ['POST'],
+            'set-colors' => ['POST'],
         ];
     }
 
@@ -49,6 +52,70 @@ class ColorController extends ApiController
         }
 
         return $response;
+    }
+
+    public function actionSetColors()
+    {
+        $colors = Yii::$app->request->post('colors');
+
+        $ids = ArrayHelper::getColumn($colors, 'id');
+        $savedColorIDs = ArrayHelper::getColumn(Color::find()->select(['id'])->all(), 'id');
+
+        $deletedIds = array_diff($savedColorIDs, $ids);
+
+        foreach ($deletedIds as $id){
+            $model = Color::findOne($id);
+            $model->delete();
+        }
+
+        if (!empty($colors)) {
+            foreach ($colors as $color) {
+
+                if (!empty($color['id'])) {
+
+                    $savedColors = Color::findOne($color['id']);
+                    if (!empty($savedColors)) {
+                        if ($color['value'] != $savedColors->value) {
+                            $savedColors->value = $color['value'];
+                            $savedColors->update();
+                        } elseif ($color['name'] != $savedColors->name) {
+                            $savedColors->name = $color['name'];
+                            $savedColors->update();
+                        }
+                    } else {
+                        Yii::$app->response->statusCode = 400;
+                        return ResponseService::errorResponse(
+                            'Not found color with this id.'
+                        );
+                    }
+                } else {
+                    $colorModel = new Color();
+                    $colorModel->name = $color['name'];
+                    $colorModel->value = $color['value'];
+
+                    if (!$colorModel->save()) {
+                        Yii::$app->response->statusCode = 400;
+                        return ResponseService::errorResponse(
+                            $colorModel->getErrors()
+                        );
+                    }
+                }
+            }
+            return ResponseService::successResponse(
+                'Colors saved!',
+                Color::find()->all()
+            );
+        } else {
+            Yii::$app->response->statusCode = 400;
+            return ResponseService::errorResponse(
+                'Colors can not be empty!'
+            );
+        }
+    }
+
+    private function deleteColors(array $colors)
+    {
+
     }
 
     public function actionGetColors(): array
