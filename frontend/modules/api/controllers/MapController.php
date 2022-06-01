@@ -80,7 +80,7 @@ class MapController extends ApiController
     {
         $json = Yii::$app->request->post('json_data');
         $circleData = Yii::$app->request->post('circle_data');
-        $date = Yii::$app->request->post('date');
+        $date = date('Y-m-d', strtotime(Yii::$app->request->post('date')));
 
         if (Map::find()->where(['date' => $date])->exists()) {
             $mapModel = Map::find()->where(['date' => $date])->one();
