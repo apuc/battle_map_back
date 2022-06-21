@@ -7,12 +7,25 @@ namespace frontend\modules\api\controllers;
 use common\services\ResponseService;
 use frontend\modules\api\models\Color;
 use Yii;
-use yii\base\BaseObject;
+use yii\filters\auth\CompositeAuth;
+use yii\filters\auth\HttpBearerAuth;
 use yii\helpers\ArrayHelper;
 
 
 class ColorController extends ApiController
 {
+    public function behaviors(): array
+    {
+        return ArrayHelper::merge(parent::behaviors(), [
+            'authenticator' => [
+                'class' => CompositeAuth::class,
+                'authMethods' => [
+                    HttpBearerAuth::class,
+                ],
+            ],
+        ]);
+    }
+
     public function verbs(): array
     {
         return [

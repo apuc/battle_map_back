@@ -7,10 +7,25 @@ namespace frontend\modules\api\controllers;
 use common\services\ResponseService;
 use frontend\modules\api\models\Map;
 use Yii;
+use yii\filters\auth\CompositeAuth;
+use yii\filters\auth\HttpBearerAuth;
+use yii\helpers\ArrayHelper;
 
 
 class MapController extends ApiController
 {
+    public function behaviors(): array
+    {
+        return ArrayHelper::merge(parent::behaviors(), [
+            'authenticator' => [
+                'class' => CompositeAuth::class,
+                'authMethods' => [
+                    HttpBearerAuth::class,
+                ],
+            ],
+        ]);
+    }
+
     public $modelClass = 'frontend\modules\api\models\Map';
     public $serializer = [
         'class' => 'yii\rest\Serializer',

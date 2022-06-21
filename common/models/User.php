@@ -7,6 +7,7 @@ use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
+use yii\web\UnauthorizedHttpException;
 
 /**
  * User model
@@ -21,6 +22,8 @@ use yii\web\IdentityInterface;
  * @property integer $status
  * @property integer $created_at
  * @property integer $updated_at
+ * @property string access_token
+ * @property $access_token_expired_at
  * @property string $password write-only password
  */
 class User extends ActiveRecord implements IdentityInterface
@@ -59,6 +62,17 @@ class User extends ActiveRecord implements IdentityInterface
         ];
     }
 
+    public function generateAccessToken(): string
+    {
+        $this->access_token = Yii::$app->security->generateRandomString();
+        return $this->access_token;
+    }
+
+    public function getTokenExpiredAt()
+    {
+        return $this->access_token_expired_at;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -69,10 +83,19 @@ class User extends ActiveRecord implements IdentityInterface
 
     /**
      * {@inheritdoc}
+     * @throws UnauthorizedHttpException
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
+        $user = static::find()->where(['access_token' => $token, 'status' => self::STATUS_ACTIVE])->one();
+        if (!$user) {
+            return false;
+        }
+        if (strtotime($user->access_token_expired_at) < time()) {
+            throw new UnauthorizedHttpException('the access - token expired ', -1);
+        } else {
+            return $user;
+        }
     }
 
     /**
