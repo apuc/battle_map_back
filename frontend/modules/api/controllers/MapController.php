@@ -65,7 +65,7 @@ class MapController extends ApiController
                 'One data',
                 Map::find()
                     ->orderBy('date DESC')
-                    ->filterWhere(['like', 'date', $formatDate])
+                    ->filterWhere(['=', 'date', $formatDate])
                     ->orFilterWhere(['<=', 'date', $formatDate])
                     ->limit(1)
                     ->one()
@@ -84,12 +84,8 @@ class MapController extends ApiController
         }
 
         if (empty($response['data'])) {
-            $response = ResponseService::successResponse(
-                'The latest data',
-                Map::find()
-                    ->orderBy('date DESC')
-                    ->asArray()
-                    ->one()
+            $response = ResponseService::errorResponse(
+                'The data not exist!'
             );
         }
         return $response;
