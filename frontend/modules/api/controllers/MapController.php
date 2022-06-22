@@ -22,6 +22,7 @@ class MapController extends ApiController
                 'authMethods' => [
                     HttpBearerAuth::class,
                 ],
+                'only' => ['set-data'],
             ],
         ]);
     }

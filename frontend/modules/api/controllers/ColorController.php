@@ -22,6 +22,7 @@ class ColorController extends ApiController
                 'authMethods' => [
                     HttpBearerAuth::class,
                 ],
+                'only' => ['set-color', 'set-colors'],
             ],
         ]);
     }

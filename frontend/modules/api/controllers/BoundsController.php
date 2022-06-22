@@ -14,18 +14,6 @@ use yii\helpers\ArrayHelper;
 
 class BoundsController extends ApiController
 {
-    public function behaviors(): array
-    {
-        return ArrayHelper::merge(parent::behaviors(), [
-            'authenticator' => [
-                'class' => CompositeAuth::class,
-                'authMethods' => [
-                    HttpBearerAuth::class,
-                ],
-            ],
-        ]);
-    }
-
     public function verbs(): array
     {
         return [
