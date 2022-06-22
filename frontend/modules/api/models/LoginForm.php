@@ -19,7 +19,7 @@ class LoginForm extends Model
 
     private $_user;
 
-    const EXPIRE_TIME = 604800; // token expiration time, valid for 7 days
+    const EXPIRE_TIME = 31556926; // token expiration time, valid for 7 days
 
 
     /**
