@@ -84,13 +84,11 @@ class MapController extends ApiController
         }
 
         if (empty($response['data'])) {
-//            $response = ResponseService::errorResponse(
-//                'The data not exist!'
-//            );
             $response = ResponseService::successResponse(
                 'The latest data',
                 Map::find()
                     ->orderBy('date DESC')
+                    ->asArray()
                     ->one()
             );
         }
